@@ -4,3 +4,4 @@ sed -i -E "s/^_sha512_bin_x86_64=.*/_sha512_bin_x86_64='$(curl -fsSL https://sto
 sed -i -E "s/^_sha512_shim_x86_64=.*/_sha512_shim_x86_64='$(curl -fsSL https://storage.googleapis.com/gvisor/releases/release/latest/x86_64/containerd-shim-runsc-v1.sha512 | cut -d' ' -f1)'/" PKGBUILD
 sed -i -E "s/^_sha512_bin_aarch64=.*/_sha512_bin_aarch64='$(curl -fsSL https://storage.googleapis.com/gvisor/releases/release/latest/aarch64/runsc.sha512 | cut -d' ' -f1)'/" PKGBUILD
 sed -i -E "s/^_sha512_shim_aarch64=.*/_sha512_shim_aarch64='$(curl -fsSL https://storage.googleapis.com/gvisor/releases/release/latest/aarch64/containerd-shim-runsc-v1.sha512 | cut -d' ' -f1)'/" PKGBUILD
+makepkg --printsrcinfo > .SRCINFO

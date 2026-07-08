@@ -1,0 +1,21 @@
+pkgbase = gvisor
+	pkgdesc = OCI container sandbox runtime focused on security, efficiency, and ease of use
+	pkgver = 20260622.0
+	pkgrel = 1
+	url = https://gvisor.dev
+	arch = x86_64
+	arch = aarch64
+	license = Apache-2.0
+	provides = gvisor
+	conflicts = gvisor
+	conflicts = gvisor
+	source_x86_64 = runsc-x86_64-20260622.0::https://storage.googleapis.com/gvisor/releases/release/20260622.0/x86_64/runsc
+	source_x86_64 = containerd-shim-runsc-v1-x86_64-20260622.0::https://storage.googleapis.com/gvisor/releases/release/20260622.0/x86_64/containerd-shim-runsc-v1
+	sha512sums_x86_64 = 6df95d09363dbd9ee5d5c889c1549b457e1783b039ff60a8f9f16f8c94c774a2ca2eef5b1c370e36b863f6b0407b53ba3c69051c6ef051253843dabf89a6de4e
+	sha512sums_x86_64 = 87c63197836574b7a2c057d2c0647d2badb679187f0b9175ecf78ac52207cdaa3f101629d3e5d165c95930ca35fe81bc26bb90fcf08e09b99c2ee047b6235ce2
+	source_aarch64 = runsc-aarch64-20260622.0::https://storage.googleapis.com/gvisor/releases/release/20260622.0/aarch64/runsc
+	source_aarch64 = containerd-shim-runsc-v1-aarch64-20260622.0::https://storage.googleapis.com/gvisor/releases/release/20260622.0/aarch64/containerd-shim-runsc-v1
+	sha512sums_aarch64 = 6d43f7c99dc182ad3750390c811537ee312fca5938245c65f0c5a23b9d38e8b7fddc1f49a816e6696d708582d813ac2d87ee98f7b46b8a6f5e6241c9eba69443
+	sha512sums_aarch64 = 6baff273822a00af5db1e22b7efa228edd5a4f82336cf6357a521c544f4665e5a39ed11d27b865a435d14faa95d6becbf59e597ee07bceabf787e3673be20f75
+
+pkgname = gvisor
