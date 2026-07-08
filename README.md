@@ -34,7 +34,7 @@ Add to your `/etc/paru.conf`:
 Mode = repo,pkgbuilds
 
 [argonaut0]
-URL = https://github.com/argonaut0/pkgbuilds
+Url = https://github.com/argonaut0/pkgbuilds
 Depth = 3
 # if you trust me ;)
 SkipReview
