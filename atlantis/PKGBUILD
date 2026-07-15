@@ -1,0 +1,18 @@
+pkgname=atlantis
+pkgver=0.46.0
+pkgrel=0
+pkgdesc="Terraform Pull Request Automation"
+arch=('x86_64' 'aarch64')
+url="https://github.com/runatlantis/atlantis"
+license=('APACHE20')
+makedepends=('unzip')
+source=("$pkgname-$pkgver.zip::https://github.com/runatlantis/atlantis/releases/download/v$pkgver/atlantis_linux_amd64.zip")
+source_aarch64=("$pkgname-$pkgver.zip::https://github.com/runatlantis/atlantis/releases/download/v$pkgver/atlantis_linux_arm64.zip")
+sha256sums=('00b04241be663ab0302eaad606149e2c3e11f8413beef9b51d838837839c05be')
+sha256sums_aarch64=('45bca36eb2411638dd66aeb3dfff5a19255d8a58f28be3937c6d83bc9c90e327')
+
+package() {
+  unzip "$pkgname-$pkgver.zip"
+  install -Dm755 "$pkgname" -t "$pkgdir/usr/bin/"
+}
+
