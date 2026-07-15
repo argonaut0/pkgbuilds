@@ -12,7 +12,7 @@ sha256sums=('00b04241be663ab0302eaad606149e2c3e11f8413beef9b51d838837839c05be')
 sha256sums_aarch64=('45bca36eb2411638dd66aeb3dfff5a19255d8a58f28be3937c6d83bc9c90e327')
 
 package() {
-  unzip "$pkgname-$pkgver.zip"
+  unzip -o "$pkgname-$pkgver.zip"
   install -Dm755 "$pkgname" -t "$pkgdir/usr/bin/"
 }
 
