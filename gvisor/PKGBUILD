@@ -1,16 +1,15 @@
 pkgname='gvisor'
 _pkgbin='runsc'
 _pkgshim='containerd-shim-runsc-v1'
-pkgver=20260622.0
+pkgver=20261019.0
 pkgrel=1
-_sha512_bin_x86_64='6df95d09363dbd9ee5d5c889c1549b457e1783b039ff60a8f9f16f8c94c774a2ca2eef5b1c370e36b863f6b0407b53ba3c69051c6ef051253843dabf89a6de4e'
-_sha512_shim_x86_64='87c63197836574b7a2c057d2c0647d2badb679187f0b9175ecf78ac52207cdaa3f101629d3e5d165c95930ca35fe81bc26bb90fcf08e09b99c2ee047b6235ce2'
-_sha512_bin_aarch64='6d43f7c99dc182ad3750390c811537ee312fca5938245c65f0c5a23b9d38e8b7fddc1f49a816e6696d708582d813ac2d87ee98f7b46b8a6f5e6241c9eba69443'
-_sha512_shim_aarch64='6baff273822a00af5db1e22b7efa228edd5a4f82336cf6357a521c544f4665e5a39ed11d27b865a435d14faa95d6becbf59e597ee07bceabf787e3673be20f75'
+_sha512_x86_64='bcbf431b2f9a039f6ab23bfe23986031130c0f149294978cedfd46910901deba0737d8642c848f597ed4b5c72324885db4d75ee86a1f6a90915fbe1f2f2eb915'
+_sha512_aarch64='60a8239ec21ba1495633dbfa24ab4d43578066fcebef2482f9d0cd1486abbfd3c5c5face1749a31cc62b287a0a44198a0852024c7f2e5683917c7c1c342d0bbe'
 pkgdesc='OCI container sandbox runtime focused on security, efficiency, and ease of use'
 arch=('x86_64' 'aarch64')
 url='https://gvisor.dev'
 license=('Apache-2.0')
+makedepends=('zstd')
 provides=(
 	"${pkgname%}"
 )
@@ -19,20 +18,26 @@ conflicts=(
 	"${pkgname%}"
 )
 source_x86_64=(
-	"$_pkgbin-x86_64-$pkgver::https://storage.googleapis.com/${pkgname%-bin}/releases/release/$pkgver/x86_64/$_pkgbin"
-	"$_pkgshim-x86_64-$pkgver::https://storage.googleapis.com/${pkgname%-bin}/releases/release/$pkgver/x86_64/$_pkgshim"
+	"$pkgname-x86_64-$pkgver.tar.zstd::https://storage.googleapis.com/${pkgname%-bin}/releases/release/$pkgver/x86_64/gvisor.tar.zstd"
 )
 source_aarch64=(
-	"$_pkgbin-aarch64-$pkgver::https://storage.googleapis.com/${pkgname%-bin}/releases/release/$pkgver/aarch64/$_pkgbin"
-	"$_pkgshim-aarch64-$pkgver::https://storage.googleapis.com/${pkgname%-bin}/releases/release/$pkgver/aarch64/$_pkgshim"
+	"$pkgname-aarch64-$pkgver.tar.zstd::https://storage.googleapis.com/${pkgname%-bin}/releases/release/$pkgver/aarch64/gvisor.tar.zstd"
 )
-sha512sums_x86_64=("$_sha512_bin_x86_64"
-                   "$_sha512_shim_x86_64")
-sha512sums_aarch64=("$_sha512_bin_aarch64"
-                    "$_sha512_shim_aarch64")
+sha512sums_x86_64=("$_sha512_x86_64")
+sha512sums_aarch64=("$_sha512_aarch64")
 
 package() {
-	install -Dm 755 "$_pkgbin-$CARCH-$pkgver" "$pkgdir/usr/bin/$_pkgbin"
-	install -Dm 755 "$_pkgshim-$CARCH-$pkgver" "$pkgdir/usr/bin/$_pkgshim"
-}
+	# runsc re-execs itself and looks for gvisor-bin/ next to its own binary,
+	# so keep runsc and gvisor-bin/ together under /usr/lib/gvisor and symlink
+	# the user-facing binaries into /usr/bin.
+	install -dm 755 "$pkgdir/usr/lib/gvisor"
+	install -Dm 755 "$srcdir/$_pkgbin" "$pkgdir/usr/lib/gvisor/$_pkgbin"
+	install -Dm 755 "$srcdir/$_pkgshim" "$pkgdir/usr/lib/gvisor/$_pkgshim"
 
+	install -dm 755 "$pkgdir/usr/lib/gvisor/gvisor-bin"
+	install -m 755 "$srcdir"/gvisor-bin/* "$pkgdir/usr/lib/gvisor/gvisor-bin/"
+
+	install -dm 755 "$pkgdir/usr/bin"
+	ln -s "/usr/lib/gvisor/$_pkgbin" "$pkgdir/usr/bin/$_pkgbin"
+	ln -s "/usr/lib/gvisor/$_pkgshim" "$pkgdir/usr/bin/$_pkgshim"
+}
