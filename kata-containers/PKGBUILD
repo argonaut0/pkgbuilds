@@ -1,0 +1,36 @@
+pkgname='kata-containers'
+pkgver=4.3.1
+pkgrel=1
+pkgdesc='OCI container runtime using lightweight virtual machines'
+arch=('x86_64' 'aarch64')
+url='https://katacontainers.io'
+license=('Apache-2.0')
+makedepends=('zstd')
+provides=(
+	"${pkgname%}"
+)
+conflicts=(
+	"${pkgname%-bin}"
+	"${pkgname%}"
+)
+_sha256_x86_64='1463a2b86845f4d3d8e87f2f764ec59856fc0fee3520967a79ade32762be2e97'
+_sha256_aarch64='2c5bf7cde334ad5307d482f45cceda496f91c9b6b96f5278c47f4f4eac1bbae6'
+# Release tarballs use architecture names that differ from uname -m.
+source_x86_64=(
+	"$pkgname-x86_64-$pkgver.tar.zst::https://github.com/kata-containers/kata-containers/releases/download/$pkgver/kata-static-$pkgver-amd64.tar.zst"
+)
+source_aarch64=(
+	"$pkgname-aarch64-$pkgver.tar.zst::https://github.com/kata-containers/kata-containers/releases/download/$pkgver/kata-static-$pkgver-arm64.tar.zst"
+)
+sha256sums_x86_64=("$_sha256_x86_64")
+sha256sums_aarch64=("$_sha256_aarch64")
+
+package() {
+	# The archive contains an ./opt/kata/ prefix; keep everything there since
+	# the bundled binaries reference /opt/kata at runtime, and symlink the
+	# user-facing binaries into /usr/bin.
+	tar -xf "$srcdir/$pkgname-$CARCH-$pkgver.tar.zst" -C "$pkgdir"
+
+	install -dm 755 "$pkgdir/usr/bin"
+	ln -s "/opt/kata/runtime-rs/bin/containerd-shim-kata-v2" "$pkgdir/usr/bin/containerd-shim-kata-v2"
+}

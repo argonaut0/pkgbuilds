@@ -1,0 +1,18 @@
+pkgbase = kata-containers
+	pkgdesc = OCI container runtime using lightweight virtual machines
+	pkgver = 4.3.1
+	pkgrel = 1
+	url = https://katacontainers.io
+	arch = x86_64
+	arch = aarch64
+	license = Apache-2.0
+	makedepends = zstd
+	provides = kata-containers
+	conflicts = kata-containers
+	conflicts = kata-containers
+	source_x86_64 = kata-containers-x86_64-4.3.1.tar.zst::https://github.com/kata-containers/kata-containers/releases/download/4.3.1/kata-static-4.3.1-amd64.tar.zst
+	sha256sums_x86_64 = 1463a2b86845f4d3d8e87f2f764ec59856fc0fee3520967a79ade32762be2e97
+	source_aarch64 = kata-containers-aarch64-4.3.1.tar.zst::https://github.com/kata-containers/kata-containers/releases/download/4.3.1/kata-static-4.3.1-arm64.tar.zst
+	sha256sums_aarch64 = 2c5bf7cde334ad5307d482f45cceda496f91c9b6b96f5278c47f4f4eac1bbae6
+
+pkgname = kata-containers
